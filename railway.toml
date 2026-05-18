@@ -1,0 +1,8 @@
+[build]
+builder = "dockerfile"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+cronSchedule = "0 13 * * *"
+startCommand = "python scanner.py"
+restartPolicyType = "never"
