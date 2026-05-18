@@ -323,8 +323,11 @@ def send_email(pdf_bytes, lead_count, hot_count):
     part.add_header("Content-Disposition",
         f'attachment; filename="Extron_Leads_{date.today().isoformat()}.pdf"')
     msg.attach(part)
+    log.info(f"Connecting to {SMTP_HOST}:{SMTP_PORT} as {SMTP_USER}...")
     with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT) as s:
-        s.login(SMTP_USER, SMTP_PASS); s.send_message(msg)
+        s.login(SMTP_USER, SMTP_PASS)
+        log.info("Logged in to Gmail OK, sending...")
+        s.send_message(msg)
     log.info(f"Report emailed to {REPORT_RECIPIENT}")
 
 # ── Main loop ─────────────────────────────────────────────────────────────────
@@ -359,4 +362,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
