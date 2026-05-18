@@ -403,7 +403,7 @@ def send_email(pdf_bytes, lead_count, hot_count):
         }
     )
     try:
-        import urllib.error
+
         with urllib.request.urlopen(req, timeout=30) as resp:
             result = json.loads(resp.read())
             log.info(f"Email sent — Resend ID: {result.get('id', '?')}")
@@ -451,3 +451,4 @@ if __name__ == "__main__":
             log.error(f"Unexpected error: {e}", exc_info=True)
         log.info("Sleeping 24 hours...")
         time.sleep(86400)
+
