@@ -33,7 +33,7 @@ log = logging.getLogger(__name__)
 # ── Config — set these as environment variables in Railway ───────────────────
 ANTHROPIC_API_KEY  = os.environ["ANTHROPIC_API_KEY"]
 SMTP_HOST          = os.environ.get("SMTP_HOST", "smtp.gmail.com")
-SMTP_PORT          = int(os.environ.get("SMTP_PORT", "587"))
+SMTP_PORT          = int(os.environ.get("SMTP_PORT", "465"))
 SMTP_USER          = os.environ.get("SMTP_USER", os.environ.get("GMAIL_ADDRESS", ""))        # your Gmail address
 SMTP_PASS          = os.environ.get("SMTP_PASS", os.environ.get("GMAIL_APP_PASS", ""))        # Gmail app password
 REPORT_RECIPIENT   = os.environ.get("REPORT_RECIPIENT", os.environ.get("REPORT_EMAIL", "")) # where to send report
@@ -107,7 +107,7 @@ Articles:
 {text}"""
     try:
         resp = client.messages.create(
-            model="claude-sonnet-4-20250514", max_tokens=2000,
+            model="claude-sonnet-4-5", max_tokens=2000,
             system="JSON-only API. Return ONLY a raw JSON array. No markdown. No backticks.",
             messages=[{"role": "user", "content": prompt}]
         )
@@ -323,8 +323,8 @@ def send_email(pdf_bytes, lead_count, hot_count):
     part.add_header("Content-Disposition",
         f'attachment; filename="Extron_Leads_{date.today().isoformat()}.pdf"')
     msg.attach(part)
-    with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as s:
-        s.ehlo(); s.starttls(); s.login(SMTP_USER, SMTP_PASS); s.send_message(msg)
+    with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT) as s:
+        s.login(SMTP_USER, SMTP_PASS); s.send_message(msg)
     log.info(f"Report emailed to {REPORT_RECIPIENT}")
 
 # ── Main loop ─────────────────────────────────────────────────────────────────
@@ -359,3 +359,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
