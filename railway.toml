@@ -1,8 +1,0 @@
-[build]
-builder = "nixpacks"
-
-[deploy]
-# Runs the scanner every day at 7:00 AM UTC
-cronSchedule = "0 7 * * *"
-startCommand = "python scanner.py"
-restartPolicyType = "never"
